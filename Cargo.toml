@@ -1,12 +1,12 @@
 [package]
-name = "ch32-st7735-demo"
+name = "demo"
 version = "0.1.0"
 authors = ["Shetty Yttehs <shetty.yttehs@outlook.com>"]
 edition = "2021"
 license = "MIT"
 
 [[bin]]
-name = "ch32-st7735-demo"
+name = "demo"
 harness = false # do not use the built in cargo test harness -> resolve rust-analyzer errors
 
 [dependencies]
