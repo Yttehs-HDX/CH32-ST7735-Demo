@@ -1,21 +1,3 @@
-# ch32-st7735-demo
+# CH32-ST7735-Demo
 
-### Build
-
-```bash
-cargo build --release
-```
-
-### Flash
-
-[wlink](https://github.com/ch32-rs/wlink) needs to be installed:
-
-```bash
-cargo install --git https://github.com/ch32-rs/wlink
-```
-
-With a WCH-Link probe connected to your target and then:
-
-```bash
-cargo run --release
-```
+Demo for ST7735 under CH32V307VCT6 using ch32-hal
