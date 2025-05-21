@@ -29,6 +29,8 @@ let pwm = SimplePwm::new(
 
 ## Description
 
+This project is build via [ch32-rs/ch32-hal-template](https://github.com/ch32-rs/ch32-hal-template).
+
 This project is for CH32V307VCT6 only:
 
 | Board        | Display         | Display size |
