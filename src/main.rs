@@ -4,6 +4,7 @@
 
 use ch32_hal::{self as hal};
 use constant::*;
+use display_manager::DisplayManager;
 use embassy_executor::Spawner;
 use embassy_time::Timer;
 use embedded_graphics::{
@@ -21,11 +22,10 @@ use hal::{
         simple_pwm::{PwmPin, SimplePwm},
     },
 };
-use my_display::MyDisplay;
 
 mod constant;
+mod display_manager;
 mod lang_items;
-mod my_display;
 
 #[embassy_executor::main(entry = "qingke_rt::entry")]
 async fn main(_spawner: Spawner) -> ! {
@@ -38,7 +38,7 @@ async fn main(_spawner: Spawner) -> ! {
     let blk = p.PA15;
     let spi = Spi::new_blocking_txonly(p.SPI3, sck, sda, Default::default());
 
-    let mut display = MyDisplay::new(
+    let mut display = DisplayManager::new(
         dc.degrade(),
         rst.degrade(),
         cs.degrade(),

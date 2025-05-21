@@ -12,11 +12,11 @@ use embedded_graphics::{
 use embedded_hal_bus::spi::{ExclusiveDevice, NoDelay};
 use st7735_lcd::{Orientation, ST7735};
 
-pub struct MyDisplay<'a, T: Instance, M: Mode> {
+pub struct DisplayManager<'a, T: Instance, M: Mode> {
     inner: DisplayInner<'a, T, M>,
 }
 
-impl<'a, T: Instance, M: Mode> MyDisplay<'a, T, M> {
+impl<'a, T: Instance, M: Mode> DisplayManager<'a, T, M> {
     pub fn new(
         dc: AnyPin,
         rst: AnyPin,
@@ -47,7 +47,7 @@ impl<'a, T: Instance, M: Mode> MyDisplay<'a, T, M> {
     }
 }
 
-impl<'a, T: Instance, M: Mode> MyDisplay<'a, T, M> {
+impl<'a, T: Instance, M: Mode> DisplayManager<'a, T, M> {
     pub fn init(&mut self) {
         self.inner.init(&mut Delay).unwrap();
     }
