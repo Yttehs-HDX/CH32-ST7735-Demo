@@ -11,7 +11,16 @@ use embedded_graphics::{
     pixelcolor::{raw::LittleEndian, Rgb565},
     prelude::RgbColor,
 };
-use hal::{gpio::Pin, println, spi::Spi};
+use hal::{
+    gpio::Pin,
+    println,
+    spi::Spi,
+    time::Hertz,
+    timer::{
+        low_level::CountingMode,
+        simple_pwm::{PwmPin, SimplePwm},
+    },
+};
 use my_display::MyDisplay;
 
 mod constant;
@@ -26,6 +35,7 @@ async fn main(_spawner: Spawner) -> ! {
 
     let (dc, rst, cs) = (p.PD3, p.PB4, p.PD4);
     let (sck, sda) = (p.PB3, p.PB5);
+    let blk = p.PA15;
     let spi = Spi::new_blocking_txonly(p.SPI3, sck, sda, Default::default());
 
     let mut display = MyDisplay::new(
@@ -38,11 +48,22 @@ async fn main(_spawner: Spawner) -> ! {
         ST7735_WIDTH as u32,
         ST7735_HEIGHT as u32,
     );
+    display.init();
 
     let image: ImageRaw<Rgb565, LittleEndian> = ImageRaw::new(RAW_IMAGE, IMAGE_WIDTH as u32);
 
-    display.init();
+    let mut pwm = SimplePwm::new(
+        p.TIM2,
+        Some(PwmPin::new_ch1::<1>(blk)),
+        None,
+        None,
+        None,
+        Hertz::khz(1),
+        CountingMode::default(),
+    );
+
     display.set_orientation(st7735_lcd::Orientation::Landscape);
+    display.set_offset(0, 0);
     display.clear(Rgb565::BLACK);
     display.set_offset(
         (ST7735_WIDTH - IMAGE_WIDTH) / 2,
@@ -50,8 +71,16 @@ async fn main(_spawner: Spawner) -> ! {
     );
     display.draw_image(&image);
 
+    let ch1 = ch32_hal::timer::Channel::Ch1;
+    let max_duty = pwm.get_max_duty();
+
+    pwm.enable(ch1);
+    pwm.set_duty(ch1, max_duty / 2);
+
     loop {
-        Timer::after_millis(1000).await;
-        println!("tick");
+        Timer::after_millis(10).await;
+
+        pwm.set_duty(ch1, max_duty / 2);
+        println!("loop\r");
     }
 }
