@@ -79,15 +79,13 @@ async fn main(_spawner: Spawner) -> ! {
     let image: ImageRaw<Rgb565, LittleEndian> = ImageRaw::new(RAW_IMAGE, IMAGE_WIDTH as u32);
     display.draw_image(&image);
 
-    let max_duty = backlight.inner_mut().get_max_duty();
-
     backlight.enable();
-    backlight.set_duty(max_duty / 2);
 
     loop {
         Timer::after_millis(10).await;
 
-        backlight.set_duty(max_duty / 2);
-        println!("loop\r");
+        let current_bright = backlight.current_brightness();
+        backlight.set_brightness(current_bright.next());
+        println!("current level: {:?}\r", current_bright);
     }
 }
