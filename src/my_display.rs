@@ -1,13 +1,17 @@
-use ch32_hal::{gpio::{AnyPin, Level, Output}, mode::Mode, spi::{Instance, Spi}};
+use ch32_hal::{
+    gpio::{AnyPin, Level, Output},
+    mode::Mode,
+    spi::{Instance, Spi},
+};
 use embedded_hal_bus::spi::{ExclusiveDevice, NoDelay};
 use st7735_lcd::ST7735;
 
 pub struct MyDisplay<'a, T: Instance, M: Mode> {
-    inner: ST7735<ExclusiveDevice<Spi<'a, T, M>, Output<'a>, NoDelay>, Output<'a>, Output<'a>>,
+    inner: DisplayInner<'a, T, M>,
 }
 
 impl<'a, T: Instance, M: Mode> MyDisplay<'a, T, M> {
-    fn new(
+    pub fn new(
         dc: AnyPin,
         rst: AnyPin,
         cs: AnyPin,
@@ -35,4 +39,11 @@ impl<'a, T: Instance, M: Mode> MyDisplay<'a, T, M> {
 
         Self { inner: display }
     }
+
+    pub fn inner_mut(&mut self) -> &mut DisplayInner<'a, T, M> {
+        &mut self.inner
+    }
 }
+
+type DisplayInner<'a, T, M> =
+    ST7735<ExclusiveDevice<Spi<'a, T, M>, Output<'a>, NoDelay>, Output<'a>, Output<'a>>;
