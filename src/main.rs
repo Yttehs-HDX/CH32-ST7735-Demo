@@ -5,10 +5,9 @@
 use ch32_hal::{self as hal};
 use constant::*;
 use embassy_executor::Spawner;
-use embassy_time::{Delay, Timer};
+use embassy_time::Timer;
 use embedded_graphics::{
-    draw_target::DrawTarget,
-    image::ImageDrawable,
+    image::ImageRaw,
     pixelcolor::{raw::LittleEndian, Rgb565},
     prelude::RgbColor,
 };
@@ -40,19 +39,17 @@ async fn main(_spawner: Spawner) -> ! {
         ST7735_HEIGHT as u32,
     );
 
-    display.inner_mut().init(&mut Delay).unwrap();
-    display
-        .inner_mut()
-        .set_orientation(&st7735_lcd::Orientation::Landscape)
-        .unwrap();
-    display.inner_mut().clear(Rgb565::BLACK).unwrap();
-    let xpos = (ST7735_WIDTH - IMAGE_WIDTH) / 2;
-    let ypos = (ST7735_HEIGHT - IMAGE_HEIGHT) / 2;
-    let image: embedded_graphics::image::ImageRaw<Rgb565, LittleEndian> =
-        embedded_graphics::image::ImageRaw::new(RAW_IMAGE, IMAGE_WIDTH as u32);
+    let image: ImageRaw<Rgb565, LittleEndian> = ImageRaw::new(RAW_IMAGE, IMAGE_WIDTH as u32);
 
-    display.inner_mut().set_offset(xpos, ypos);
-    image.draw(display.inner_mut()).unwrap();
+    display.init();
+    display.set_orientation(st7735_lcd::Orientation::Landscape);
+    display.clear(Rgb565::BLACK);
+
+    display.set_offset(
+        (ST7735_WIDTH - IMAGE_WIDTH) / 2,
+        (ST7735_HEIGHT - IMAGE_HEIGHT) / 2,
+    );
+    display.draw_image(&image);
 
     loop {
         Timer::after_millis(1000).await;
