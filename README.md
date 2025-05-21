@@ -72,7 +72,7 @@ make run
 
 5. Press <kbd>USER</kbd> to switch brightness.
 
-## Special thanks
+## Special Thanks
 
 - [`ch32-rs/ch32-hal`](https://github.com/ch32-rs/ch32-hal): HAL implementation for CH32V307.
 - [`sajattack/st7735-lcd-rs`](https://github.com/sajattack/st7735-lcd-rs): ST7735 driver support.
