@@ -11,9 +11,8 @@ use hal::{
     spi::Spi,
 };
 
-const RAW_IMAGE: &[u8] = include_bytes!("../assets/ferris.raw");
-
 mod lang_items;
+mod constant;
 
 #[embassy_executor::main(entry = "qingke_rt::entry")]
 async fn main(_spawner: Spawner) -> ! {
