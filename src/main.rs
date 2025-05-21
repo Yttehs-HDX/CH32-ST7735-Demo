@@ -19,6 +19,7 @@ use hal::{
 };
 
 mod constant;
+mod my_display;
 mod lang_items;
 
 #[embassy_executor::main(entry = "qingke_rt::entry")]
