@@ -66,6 +66,8 @@ From ST7735 to board:
 
 ```bash
 cargo run --release
+# or
+make run
 ```
 
 5. Press <kbd>USER</kbd> to switch brightness.
