@@ -69,6 +69,8 @@ async fn main(_spawner: Spawner) -> ! {
         ch32_hal::timer::Channel::Ch1,
     );
 
+    backlight.enable();
+
     display.set_orientation(st7735_lcd::Orientation::Landscape);
     display.set_offset(0, 0);
     display.clear(Rgb565::BLACK);
@@ -78,8 +80,6 @@ async fn main(_spawner: Spawner) -> ! {
     );
     let image: ImageRaw<Rgb565, LittleEndian> = ImageRaw::new(RAW_IMAGE, IMAGE_WIDTH as u32);
     display.draw_image(&image);
-
-    backlight.enable();
 
     loop {
         Timer::after_millis(10).await;
