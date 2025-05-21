@@ -45,7 +45,7 @@ Driver the ST7735 to display rust logo (from [sajattack/st7735-lcd-rs](https://g
 
 On board (for <kbd>USER</kbd> button):
 
-PA14 <---> KEY
+`PA14` <---> `KEY`
 
 From ST7735 to board:
 
