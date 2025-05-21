@@ -39,6 +39,8 @@ This project is for CH32V307VCT6 only:
 
 Driver the ST7735 to display rust logo (from [sajattack/st7735-lcd-rs](https://github.com/sajattack/st7735-lcd-rs)), with a brightness setting button (user button).
 
+![preview](docs/assets/preview.jpg)
+
 ## Usage
 
 1. Install [wlink](https://github.com/ch32-rs/wlink) tool.
