@@ -5,10 +5,11 @@
 use embassy_executor::Spawner;
 use embassy_time::Timer;
 use hal::println;
-use panic_halt as _;
 use ch32_hal as hal;
 
 const RAW_IMAGE: &[u8] = include_bytes!("../assets/ferris.raw");
+
+mod lang_items;
 
 #[embassy_executor::main(entry = "qingke_rt::entry")]
 async fn main(_spawner: Spawner) -> ! {
