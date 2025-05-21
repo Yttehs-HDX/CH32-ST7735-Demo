@@ -42,8 +42,7 @@ impl<'a, T: GeneralInstance16bit> BacklightManager<'a, T> {
 }
 
 pub mod level {
-    #[allow(unused)]
-    #[derive(Clone, Copy, PartialEq, Eq, Debug)]
+    #[derive(Clone, Copy, PartialEq, Eq, Debug, Default)]
     pub enum BrightnessLevel {
         Off,
         Low0,
@@ -55,13 +54,8 @@ pub mod level {
         High0,
         High1,
         High2,
+        #[default]
         Max,
-    }
-
-    impl Default for BrightnessLevel {
-        fn default() -> Self {
-            BrightnessLevel::Max
-        }
     }
 
     impl BrightnessLevel {

@@ -17,6 +17,7 @@ pub struct DisplayManager<'a, T: Instance, M: Mode> {
 }
 
 impl<'a, T: Instance, M: Mode> DisplayManager<'a, T, M> {
+    #[allow(clippy::too_many_arguments)]
     pub fn new(
         dc: AnyPin,
         rst: AnyPin,
