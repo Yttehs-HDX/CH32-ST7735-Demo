@@ -24,6 +24,7 @@ impl<'a, T: GeneralInstance16bit> BacklightManager<'a, T> {
 impl<'a, T: GeneralInstance16bit> BacklightManager<'a, T> {
     pub fn enable(&mut self) {
         self.inner.enable(self.channel);
+        self.set_brightness(self.brightness);
     }
 
     fn set_duty(&mut self, duty: u32) {

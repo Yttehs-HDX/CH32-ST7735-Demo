@@ -3,7 +3,7 @@
 #![feature(impl_trait_in_assoc_type)]
 
 use backlight_manager::BacklightManager;
-use ch32_hal::{self as hal};
+use ch32_hal::{self as hal, gpio::Input};
 use constant::*;
 use display_manager::DisplayManager;
 use embassy_executor::Spawner;
@@ -14,7 +14,7 @@ use embedded_graphics::{
     prelude::RgbColor,
 };
 use hal::{
-    gpio::Pin,
+    gpio::{Pin, Pull},
     println,
     spi::Spi,
     time::Hertz,
@@ -64,12 +64,11 @@ async fn main(_spawner: Spawner) -> ! {
         CountingMode::default(),
     );
 
-    let mut backlight = BacklightManager::new(
-        pwm,
-        ch32_hal::timer::Channel::Ch1,
-    );
+    let mut backlight = BacklightManager::new(pwm, ch32_hal::timer::Channel::Ch1);
 
     backlight.enable();
+
+    let button = Input::new(p.PA0, Pull::Up);
 
     display.set_orientation(st7735_lcd::Orientation::Landscape);
     display.set_offset(0, 0);
@@ -82,10 +81,19 @@ async fn main(_spawner: Spawner) -> ! {
     display.draw_image(&image);
 
     loop {
+        let (mut flag1, mut flag2) = (false, false);
+        if button.is_low() {
+            flag1 = true;
+        }
         Timer::after_millis(10).await;
+        if button.is_high() {
+            flag2 = true;
+        }
 
-        let current_bright = backlight.current_brightness();
-        backlight.set_brightness(current_bright.next());
-        println!("current level: {:?}\r", current_bright);
+        if flag1 && flag2 {
+            let current_bright = backlight.current_brightness();
+            backlight.set_brightness(current_bright.next());
+            println!("current level: {:?}\r", current_bright.next());
+        }
     }
 }
