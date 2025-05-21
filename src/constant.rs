@@ -4,5 +4,7 @@ pub const IMAGE_WIDTH: u16 = 86;
 pub const IMAGE_HEIGHT: u16 = 84;
 
 // ST7735 display
-pub const ST7735_WIDTH: u16 = 144;
-pub const ST7735_HEIGHT: u16 = 144;
+pub const DISPLAY_WIDTH: u16 = 144;
+pub const DISPLAY_HEIGHT: u16 = 144;
+pub const DISPLAY_RGB: bool = false;
+pub const DISPLAY_INVERTED: bool = false;

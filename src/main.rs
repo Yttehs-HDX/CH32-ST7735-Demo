@@ -45,10 +45,10 @@ async fn main(_spawner: Spawner) -> ! {
         rst.degrade(),
         cs.degrade(),
         spi,
-        false,
-        false,
-        ST7735_WIDTH as u32,
-        ST7735_HEIGHT as u32,
+        DISPLAY_RGB,
+        DISPLAY_INVERTED,
+        DISPLAY_WIDTH as u32,
+        DISPLAY_HEIGHT as u32,
     );
 
     // display must be initialized before initializing the backlight
@@ -74,8 +74,8 @@ async fn main(_spawner: Spawner) -> ! {
     display.set_offset(0, 0);
     display.clear(Rgb565::BLACK);
     display.set_offset(
-        (ST7735_WIDTH - IMAGE_WIDTH) / 2,
-        (ST7735_HEIGHT - IMAGE_HEIGHT) / 2,
+        (DISPLAY_WIDTH - IMAGE_WIDTH) / 2,
+        (DISPLAY_HEIGHT - IMAGE_HEIGHT) / 2,
     );
     let image: ImageRaw<Rgb565, LittleEndian> = ImageRaw::new(RAW_IMAGE, IMAGE_WIDTH as u32);
     display.draw_image(&image);
