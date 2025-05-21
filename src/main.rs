@@ -2,6 +2,7 @@
 #![no_main]
 #![feature(impl_trait_in_assoc_type)]
 
+use backlight_manager::BacklightManager;
 use ch32_hal::{self as hal};
 use constant::*;
 use display_manager::DisplayManager;
@@ -23,6 +24,7 @@ use hal::{
     },
 };
 
+mod backlight_manager;
 mod constant;
 mod display_manager;
 mod lang_items;
@@ -48,11 +50,11 @@ async fn main(_spawner: Spawner) -> ! {
         ST7735_WIDTH as u32,
         ST7735_HEIGHT as u32,
     );
+
+    // display must be initialized before initializing the backlight
     display.init();
 
-    let image: ImageRaw<Rgb565, LittleEndian> = ImageRaw::new(RAW_IMAGE, IMAGE_WIDTH as u32);
-
-    let mut pwm = SimplePwm::new(
+    let pwm = SimplePwm::new(
         p.TIM2,
         Some(PwmPin::new_ch1::<1>(blk)),
         None,
@@ -62,6 +64,11 @@ async fn main(_spawner: Spawner) -> ! {
         CountingMode::default(),
     );
 
+    let mut backlight = BacklightManager::new(
+        pwm,
+        ch32_hal::timer::Channel::Ch1,
+    );
+
     display.set_orientation(st7735_lcd::Orientation::Landscape);
     display.set_offset(0, 0);
     display.clear(Rgb565::BLACK);
@@ -69,18 +76,18 @@ async fn main(_spawner: Spawner) -> ! {
         (ST7735_WIDTH - IMAGE_WIDTH) / 2,
         (ST7735_HEIGHT - IMAGE_HEIGHT) / 2,
     );
+    let image: ImageRaw<Rgb565, LittleEndian> = ImageRaw::new(RAW_IMAGE, IMAGE_WIDTH as u32);
     display.draw_image(&image);
 
-    let ch1 = ch32_hal::timer::Channel::Ch1;
-    let max_duty = pwm.get_max_duty();
+    let max_duty = backlight.inner_mut().get_max_duty();
 
-    pwm.enable(ch1);
-    pwm.set_duty(ch1, max_duty / 2);
+    backlight.enable();
+    backlight.set_duty(max_duty / 2);
 
     loop {
         Timer::after_millis(10).await;
 
-        pwm.set_duty(ch1, max_duty / 2);
+        backlight.set_duty(max_duty / 2);
         println!("loop\r");
     }
 }
