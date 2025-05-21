@@ -44,7 +44,6 @@ async fn main(_spawner: Spawner) -> ! {
     display.init();
     display.set_orientation(st7735_lcd::Orientation::Landscape);
     display.clear(Rgb565::BLACK);
-
     display.set_offset(
         (ST7735_WIDTH - IMAGE_WIDTH) / 2,
         (ST7735_HEIGHT - IMAGE_HEIGHT) / 2,
