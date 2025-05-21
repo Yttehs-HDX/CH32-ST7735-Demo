@@ -8,6 +8,8 @@ use ch32_hal::gpio::{AnyPin, Level, Output, Pin};
 use ch32_hal::println;
 use panic_halt as _;
 
+const RAW_IMAGE: &[u8] = include_bytes!("../assets/ferris.raw");
+
 #[embassy_executor::task]
 async fn blink(pin: AnyPin, interval_ms: u64) {
     let mut led = Output::new(pin, Level::Low, Default::default());
