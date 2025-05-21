@@ -2,6 +2,31 @@
 
 Demo for ST7735 under CH32V307VCT6 using ch32-hal
 
+## Features
+
+- SPI: communicate with ST7735, see struct [`DisplayManager`](src/display_manager.rs).
+
+```rust
+let cs = p.PD4;
+let (sck, sda) = (p.PB3, p.PB5);
+let spi = Spi::new_blocking_txonly(p.SPI3, sck, sda, Default::default());
+```
+
+- PWM: control screen brightness, see struct [`BacklightManager`](src/backlight_manager.rs).
+
+```rust
+let blk = p.PA15;
+let pwm = SimplePwm::new(
+    p.TIM2,
+    Some(PwmPin::new_ch1::<1>(blk)),
+    None,
+    None,
+    None,
+    Hertz::khz(1),
+    CountingMode::default(),
+);
+```
+
 ## Description
 
 This project is for CH32V307VCT6 only:
@@ -18,7 +43,7 @@ Driver the ST7735 to display rust logo (from [sajattack/st7735-lcd-rs](https://g
 
 2. Connect DuPont line.
 
-On board:
+On board (for <kbd>USER</kbd> button):
 
 PA14 <---> KEY
 
@@ -44,3 +69,12 @@ cargo run --release
 ```
 
 5. Press <kbd>USER</kbd> to switch brightness.
+
+## Special thanks
+
+- [`ch32-rs/ch32-hal`](https://github.com/ch32-rs/ch32-hal): HAL implementation for CH32V307.
+- [`sajattack/st7735-lcd-rs`](https://github.com/sajattack/st7735-lcd-rs): ST7735 driver support.
+
+## License
+
+MIT
