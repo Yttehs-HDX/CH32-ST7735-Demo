@@ -3,7 +3,7 @@
 #![feature(impl_trait_in_assoc_type)]
 
 use ch32_hal::{self as hal};
-use constant::{IMAGE_HEIGHT, IMAGE_WIDTH, RAW_IMAGE, ST7735_HEIGHT, ST7735_WIDTH};
+use constant::*;
 use embassy_executor::Spawner;
 use embassy_time::{Delay, Timer};
 use embedded_graphics::{
