@@ -3,7 +3,7 @@
 #![feature(impl_trait_in_assoc_type)]
 
 use backlight_manager::BacklightManager;
-use ch32_hal::{self as hal, gpio::Input};
+use ch32_hal as hal;
 use constant::*;
 use display_manager::DisplayManager;
 use embassy_executor::Spawner;
@@ -14,7 +14,7 @@ use embedded_graphics::{
     prelude::RgbColor,
 };
 use hal::{
-    gpio::{Pin, Pull},
+    gpio::{Input, Pin, Pull},
     println,
     spi::Spi,
     time::Hertz,
