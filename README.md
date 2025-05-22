@@ -1,5 +1,7 @@
 # CH32-ST7735-Demo
 
+[![Build test](https://github.com/Yttehs-HDX/CH32-ST7735-Demo/actions/workflows/build-test.yml/badge.svg)](https://github.com/Yttehs-HDX/CH32-ST7735-Demo/actions/workflows/build-test.yml)
+
 Demo for ST7735 under CH32V307VCT6 using ch32-hal
 
 ## Features
